@@ -1,0 +1,27 @@
+@keyframes first {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes nth {
+  0% {
+    transform: translateY(-25px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.Animated:first-child {
+  animation-name: first;
+  animation-duration: 0.75s;
+}
+
+.Animated {
+  animation-name: nth;
+  animation-duration: 0.75s;
+}
