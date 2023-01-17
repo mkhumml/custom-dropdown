@@ -2,10 +2,6 @@ import React, { useEffect, useState } from "react";
 import styles from "./Test.module.css";
 import useDropdownSearch from "./useDropdownSearch";
 
-//InputValue (Value) muss hoch
-//Labelname
-//name
-
 interface ITextFieldDropdown {
   setDropdownValue: Function | undefined;
   dropdownValue: string | undefined;
@@ -25,15 +21,9 @@ const TextFieldDropdown = ({ setDropdownValue, label, name }: ITextFieldDropdown
 
   return (
     <div className="block p-4">
-      {/*<label
-        className="font-semibold relative top-3 left-2 pl-1 ml-1 pr-1 bg-white focus:text-yellow-50"
-        htmlFor={name}
-      >
-        {label}
-  </label>*/}
       <input
         value={state}
-        onChange={(e) => setState(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setState(e.target.value)}
         id={name}
         type="text"
         autoComplete="off"

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
 interface IUseDropdownSearchProps {
@@ -9,13 +9,20 @@ interface IUseDropdownSearchStateProps {
   state: string;
 }
 
+interface IFetchInterface {
+  setData: Function;
+  setError: Function;
+  setLoading: Function;
+  state: string | null;
+}
+
 const useDropdownSearch = ({ state }: IUseDropdownSearchProps) => {
   const [data, setData] = useState<IUseDropdownSearchStateProps[] | null>(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    (async function () {
+    async function Fetch() {
       try {
         setLoading(true);
         const response: any = await axios.get(
@@ -25,6 +32,7 @@ const useDropdownSearch = ({ state }: IUseDropdownSearchProps) => {
 
         if (responseData) {
           if (state !== null && state !== "") {
+            setLoading(false);
             setData(
               responseData.filter((item: any) => {
                 if (item.name.toLowerCase() === state.toLowerCase()) {
@@ -35,15 +43,17 @@ const useDropdownSearch = ({ state }: IUseDropdownSearchProps) => {
               })
             );
           } else {
+            setLoading(false);
             setData(null);
           }
         }
+        setLoading(false);
       } catch (err: any) {
         setError(err);
-      } finally {
         setLoading(false);
       }
-    })();
+    }
+    Fetch();
   }, [state]);
 
   return { data, error, loading };
