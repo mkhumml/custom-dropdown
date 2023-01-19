@@ -1,60 +1,64 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 interface IUseDropdownSearchProps {
-  state: string | null;
-}
-
-interface IUseDropdownSearchStateProps {
-  state: string;
+  value: string;
+  url: string;
 }
 
 interface IFetchInterface {
-  setData: Function;
-  setError: Function;
-  setLoading: Function;
-  state: string | null;
+  value: string;
+  url: string;
 }
 
-const useDropdownSearch = ({ state }: IUseDropdownSearchProps) => {
-  const [data, setData] = useState<IUseDropdownSearchStateProps[] | null>(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+interface IFilterFetchData {
+  value: string;
+  data: [];
+}
+
+type Data = string[];
+
+
+const filterFetchData = ({ value, data }: IFilterFetchData) => {
+  return data.filter((item: any) => {
+    if (item.name.toLowerCase() === value.toLowerCase()) {
+      return [];
+    }
+    return item.name.toLowerCase().includes(value.toLocaleLowerCase());
+  })
+}
+
+async function Fetch({ value, url }: IFetchInterface) {
+  if (value === null || value === "") {
+    return null
+  }
+  try {
+    const response: any = await axios.get(url);
+    const data: [] = await response.data;
+    return filterFetchData({ value, data });
+  } catch (err: any) {
+    return err;
+  }
+}
+
+
+
+const useDropdownSearch = ({ value, url }: IUseDropdownSearchProps) => {
+  const [data, setData] = useState<Data | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<Boolean>(false);
 
   useEffect(() => {
-    async function Fetch() {
-      try {
-        setLoading(true);
-        const response: any = await axios.get(
-          "https://jsonplaceholder.typicode.com/users"
-        );
-        const responseData: IUseDropdownSearchStateProps[] = response.data;
+    setLoading(true)
+    Fetch({ value, url })
+      .then((result: Data) => {
+        setData(result)
+        setLoading(false)
+      }).catch(err => {
+        setError(err)
+      })
 
-        if (responseData) {
-          if (state !== null && state !== "") {
-            setLoading(false);
-            setData(
-              responseData.filter((item: any) => {
-                if (item.name.toLowerCase() === state.toLowerCase()) {
-                  return null;
-                } else {
-                  return item.name.toLowerCase().includes(state.toLocaleLowerCase());
-                }
-              })
-            );
-          } else {
-            setLoading(false);
-            setData(null);
-          }
-        }
-        setLoading(false);
-      } catch (err: any) {
-        setError(err);
-        setLoading(false);
-      }
-    }
-    Fetch();
-  }, [state]);
+  }, [value, url]);
 
   return { data, error, loading };
 };

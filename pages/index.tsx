@@ -1,15 +1,10 @@
 import Head from "next/head";
-import { userAgentFromString } from "next/server";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TextFieldDropdown from "../components/TextFieldDropdown/TextFieldDropdown";
 
 export default function Home() {
   const [test, setTest] = useState("");
 
-  useEffect(() => {
-    console.log("TEST");
-    console.log(test);
-  }, [test]);
   return (
     <>
       <Head>
@@ -18,23 +13,19 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex justify-center items-center border border-dotted border-red-600">
-        <TextFieldDropdown
-          setDropdownValue={undefined}
-          dropdownValue={undefined}
-          label="DropdownUncontrolled"
-          name="DropdownTest"
-        />
-        <TextFieldDropdown
-          dropdownValue={test}
-          setDropdownValue={setTest}
-          label="DropdownControlled"
-          name="DropdownTest"
-        />
+      <main className="flex border border-dotted border-red-600">
+        <div>
+          <TextFieldDropdown
+            dropdownValue={test}
+            setDropdownValue={setTest}
+            label="DropdownControlled"
+            name="DropdownTest"
+          />
+        </div>
       </main>
       <div className="block px-4 py-2">
-          <button className="py-2 px-4 border border-black">Test</button>
-        </div>
+        <button onClick={() => console.log("dropdownData: ", test)} className="py-2 px-4 border border-black">Test</button>
+      </div>
     </>
   );
 }
