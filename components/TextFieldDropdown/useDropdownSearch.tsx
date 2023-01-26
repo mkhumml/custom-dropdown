@@ -16,7 +16,9 @@ interface IFilterFetchData {
   data: [];
 }
 
-type Data = string[];
+type Data = [{
+  name?: string
+}];
 
 
 const filterFetchData = ({ value, data }: IFilterFetchData) => {
@@ -44,16 +46,16 @@ async function Fetch({ value, url }: IFetchInterface) {
 
 
 const useDropdownSearch = ({ value, url }: IUseDropdownSearchProps) => {
-  const [data, setData] = useState<Data | null>(null);
+  const [data, setData] = useState<Data | null>([{ name: "du huren" }]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<Boolean>(false);
 
   useEffect(() => {
-    setLoading(true)
+    //setLoading(true)
     Fetch({ value, url })
       .then((result: Data) => {
         setData(result)
-        setLoading(false)
+        //setLoading(false)
       }).catch(err => {
         setError(err)
       })

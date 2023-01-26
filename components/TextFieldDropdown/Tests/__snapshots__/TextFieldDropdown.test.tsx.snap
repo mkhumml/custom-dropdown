@@ -2,26 +2,28 @@
 
 exports[`TextFieldDropdown without Data Controlled Snapshot 1`] = `
 <div
-  className="block p-4"
+  className="block p-4 border border-red-600"
 >
   <input
     autoComplete="off"
-    className="shadow-inputBorder py-2 px-4 w-full focus:outline-0 focus:shadow-inputBorderFocus"
+    className="shadow-inputBorder py-2 px-4 w-full "
     id="DropdownControlledTest"
+    onBlur={[Function]}
     onChange={[Function]}
+    onFocus={[Function]}
     type="text"
     value=""
   />
   <div
-    className="relative z-10"
+    className="relative"
   >
     <span
-      className="font-semibold absolute -top-[3.35rem] left-2 pl-1 pr-1 bg-white z-10"
+      className="font-semibold absolute -top-[3.35rem] left-2 pl-1 pr-1 bg-white z-inputLabel"
     >
       DropdownControlled
     </span>
     <div
-      className="absolute z-10 w-full"
+      className="absolute z-dropdownOptionsContainer w-full  hidden"
     />
   </div>
 </div>
